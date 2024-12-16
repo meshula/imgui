@@ -41,6 +41,10 @@
 #include "imgui_impl_metal.h"
 #import <time.h>
 #import <Metal/Metal.h>
+#import <AppKit/AppKit.h>
+
+#include "../../src/Providers/Color/glfwColor.h"
+
 
 // Forward Declarations
 static void ImGui_ImplMetal_InitMultiViewportSupport();
@@ -447,6 +451,10 @@ static void ImGui_ImplMetal_CreateWindow(ImGuiViewport* viewport)
     data->CommandQueue = [device newCommandQueue];
     data->RenderPassDescriptor = [[MTLRenderPassDescriptor alloc] init];
     data->Handle = handle;
+
+#if TARGET_OS_OSX
+    SetNSWindowColorEnvironment(window, "lin_displayp3", ProviderFramebufferFormat_f16HDR);
+#endif
 }
 
 static void ImGui_ImplMetal_DestroyWindow(ImGuiViewport* viewport)
